@@ -129,6 +129,14 @@ export const useAnchoredPosition = <T extends HTMLElement, F extends HTMLElement
       return
     }
     const rect = anchor.getBoundingClientRect()
+    /*
+     * 触发元素此刻没有盒子（例如它所在的容器只在 hover / active 时才 display）：
+     * 这时 getBoundingClientRect() 全是 0，继续算会把浮层钉到视口左上角。
+     * 保持在好位置上不动，等下一次有效测量（open 状态下的 ResizeObserver / scroll 回调）。
+     */
+    if (rect.width === 0 && rect.height === 0) {
+      return
+    }
     const spaceAbove = rect.top - offset - VIEWPORT_PADDING
     const spaceBelow = window.innerHeight - rect.bottom - offset - VIEWPORT_PADDING
 
