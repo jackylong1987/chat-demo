@@ -24,7 +24,7 @@
     &:hover,
     &.active {
       .action {
-        display: flex;
+        visibility: visible;
       }
     }
   }
@@ -40,7 +40,10 @@
 }
 
 .action {
-  display: none;
+  /* 保留布局盒子：菜单会压在指针下方，行一旦失去 :hover，锚点若 display:none
+     就会量出 0×0，浮层被钉到视口左上角。用 visibility 控制显隐即可。 */
+  display: flex;
+  visibility: hidden;
   flex-shrink: 0;
   margin-left: 4px;
 }
@@ -61,7 +64,7 @@
 
 @media (hover: none) {
   .action {
-    display: flex;
+    visibility: visible;
   }
 }
 
